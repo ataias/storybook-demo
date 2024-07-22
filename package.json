@@ -5,16 +5,28 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "react": "19.0.0-rc-d025ddd3-20240722",
     "react-dom": "19.0.0-rc-d025ddd3-20240722"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.6.1",
+    "@storybook/addon-essentials": "^8.2.5",
+    "@storybook/addon-interactions": "^8.2.5",
+    "@storybook/addon-links": "^8.2.5",
+    "@storybook/addon-onboarding": "^8.2.5",
+    "@storybook/blocks": "^8.2.5",
+    "@storybook/react": "^8.2.5",
+    "@storybook/react-vite": "^8.2.5",
+    "@storybook/test": "^8.2.5",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "storybook": "^8.2.5",
     "typescript": "^5.5.3",
     "vite": "^5.3.4"
   }
