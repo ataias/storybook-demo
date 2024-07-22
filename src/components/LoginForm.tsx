@@ -1,7 +1,9 @@
-import { Button, ButtonGroup, Checkbox, Form, TextField } from "@adobe/react-spectrum";
-import { useCallback } from "react";
+import { Button, ButtonGroup, Checkbox, Content, Form, Heading, InlineAlert, TextField } from "@adobe/react-spectrum";
+import { useCallback, useState } from "react";
 
 export function LoginForm({ handleSubmit }: LoginFormProps) {
+    let [isInvalid, setInvalid] = useState<boolean>(false);
+
     const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -13,9 +15,25 @@ export function LoginForm({ handleSubmit }: LoginFormProps) {
     }, [])
 
     return (
-        <Form maxWidth="size-3600" onSubmit={onSubmit}>
-            <TextField name="email" label="Email" />
-            <TextField name="password" label="Password" />
+        <Form
+            validationBehavior="native"
+            onInvalid={e => {
+                e.preventDefault();
+                setInvalid(true);
+            }}
+            maxWidth="size-3600" onSubmit={onSubmit}
+        >
+            {isInvalid ? (
+                <InlineAlert variant="negative" autoFocus>
+                    <Heading>Unable to submit</Heading>
+                    <Content>
+                        Please fix the validation errors below, and re-submit the form.
+                    </Content>
+                </InlineAlert>
+            ) : <></>}
+
+            <TextField name="email" label="Email" isRequired={true} />
+            <TextField name="password" label="Password" isRequired={true} />
             <Checkbox name="rememberMe">Remember me</Checkbox>
             <ButtonGroup>
                 <Button type="submit" variant="primary">Submit</Button>

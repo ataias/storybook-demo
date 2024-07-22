@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { fn, userEvent, within } from '@storybook/test';
 import { LoginForm } from './LoginForm';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -14,10 +14,8 @@ const meta = {
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
-    backgroundColor: { control: 'color' },
+    // backgroundColor: { control: 'color' },
   },
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { onClick: fn() },
 } satisfies Meta<typeof LoginForm>;
 
 export default meta;
@@ -26,8 +24,54 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
   args: {
-    // primary: true,
-    // label: 'Button',
     handleSubmit: fn(),
   },
+};
+
+export const Valid: Story = {
+  args: {
+    handleSubmit: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+
+    // Can import from '@storybook/test'
+    // logRoles(canvasElement);
+    const emailInput = canvas.getByLabelText(/email/i, {
+      selector: 'input',
+    });
+
+    await userEvent.type(emailInput, 'example-email@email.com', {
+      // This would be a delay between characters
+      // delay: 100,
+    });
+
+    const passwordInput = canvas.getByLabelText(/password/i, {
+      selector: 'input',
+    });
+
+    await userEvent.type(passwordInput, 'ExamplePassword', {
+      // This would be a delay between characters
+      // delay: 100,
+    });
+    // See https://storybook.js.org/docs/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    const submitButton = canvas.getByRole('button');
+
+    await userEvent.click(submitButton);
+  }
+};
+
+
+export const Invalid: Story = {
+  args: {
+    handleSubmit: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const submitButton = canvas.getByRole('button');
+
+    await userEvent.click(submitButton);
+  }
 };
